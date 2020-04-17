@@ -36,6 +36,16 @@ namespace PMS.Repository
             return _db.LeaveHistories.Find(id);
         }
 
+        public bool isExists(int id)
+        {
+            //cool way to check if a table is empty
+            //var exists = _db.LeaveHistories.Any();
+            //returns true if table has value
+
+            var exists = _db.LeaveHistories.Any(q => q.Id == id);
+            return exists;
+        }
+
         public bool Save()
         {
             var changes = _db.SaveChanges();

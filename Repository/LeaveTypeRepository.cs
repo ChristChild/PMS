@@ -3,7 +3,6 @@ using PMS.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PMS.Repository
 {
@@ -42,6 +41,16 @@ namespace PMS.Repository
         public ICollection<LeaveType> GetEmployeeByLeaveType(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public bool isExists(int id)
+        {
+            //cool way to check if a table is empty
+            //var exists = _db.LeaveHistories.Any();
+            //returns true if table has value
+
+            var exists = _db.LeaveTypes.Any(q =>q.Id == id);
+            return exists;
         }
 
         public bool Save()
