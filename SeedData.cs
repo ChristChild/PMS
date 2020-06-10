@@ -17,12 +17,12 @@ namespace PMS
 
         private static void SeedUsers(UserManager<IdentityUser> userManager)
         {
-            if (userManager.FindByNameAsync("admin").Result == null)
+            if (userManager.FindByNameAsync("administrate").Result == null)
             {
                 var user = new IdentityUser
                 {
-                    UserName = "admin",
-                    Email = "admin@localhost"
+                    UserName = "admin@localhost.com",
+                    Email = "admin@localhost.com"
                 };
                 var result = userManager.CreateAsync(user, "P@ssw0rd").Result;
                 if (result.Succeeded)

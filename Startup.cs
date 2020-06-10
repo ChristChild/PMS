@@ -41,8 +41,9 @@ namespace PMS
             services.AddScoped<ILeaveHistoryRepository, LeaveHistoryRepository>();
 
             services.AddAutoMapper(typeof(AutomapperMaps));
-
+                     // -- need to confirm email address in order to login --
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+           // services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
