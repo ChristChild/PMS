@@ -8,5 +8,6 @@ namespace PMS.Contracts
 {
     public interface ILeaveAllocationRepository : IRepositoryBase<LeaveAllocation>
     {
+        bool CheckAllocation(int leavetypeid, string employeeid);
     }
 }

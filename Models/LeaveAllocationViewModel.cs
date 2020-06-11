@@ -12,6 +12,8 @@ namespace PMS.Models
         public int NumberOfDays { get; set; }
         public DateTime DateCreated { get; set; }
 
+        public int Period { get; set; }
+
         public EmployeeViewModel Employee { get; set; }
         public string EmployeeId { get; set; }
 
@@ -20,5 +22,12 @@ namespace PMS.Models
 
         public IEnumerable<SelectListItem> Employees { get; set; }
         public IEnumerable<SelectListItem> LeaveTypes { get; set; }
+    }
+
+    public class CreateAllocationViewModel
+    {
+        public int NumberUpdated { get; set; }
+        public List<LeaveTypeViewModel> LeaveTypes { get; set; }
+
     }
 }
