@@ -1,4 +1,5 @@
-﻿using PMS.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PMS.Contracts;
 using PMS.Data;
 using System;
 using System.Collections.Generic;
@@ -37,12 +38,24 @@ namespace PMS.Repository
 
         public ICollection<LeaveAllocation> FindAll()
         {
-           return _db.LeaveAllocations.ToList();
+           return _db.LeaveAllocations.Include(q =>q.LeaveType).ToList();
         }
 
         public LeaveAllocation FindByID(int id)
         {
-            return _db.LeaveAllocations.Find(id);
+            var LeaveAllocation = _db.LeaveAllocations
+                .Include(q => q.LeaveType)
+                .Include(q => q.Employee)
+                .FirstOrDefault(q => q.Id==id);
+            return LeaveAllocation;
+        }
+
+        public ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string id)
+        {
+            var period = DateTime.Now.Year;
+            return FindAll()
+                .Where(q => q.EmployeeId == id && q.Period == period)
+                .ToList();
         }
 
         public bool isExists(int id)
