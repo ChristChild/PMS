@@ -8,7 +8,7 @@ namespace PMS.Contracts
 {
     public interface ILeaveRequestRepository: IRepositoryBase<LeaveRequest>
     {
-        ICollection<LeaveRequest> GetLeaveRequestByEmployee(string id);
+         Task<ICollection<LeaveRequest>> GetLeaveRequestByEmployee(string id);
 
     }
 }

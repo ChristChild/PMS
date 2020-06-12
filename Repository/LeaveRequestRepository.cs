@@ -15,64 +15,64 @@ namespace PMS.Repository
         {
             _db = db;
         }
-        public bool Create(LeaveRequest entity)
+        public async Task<bool> Create(LeaveRequest entity)
         {
-            _db.LeaveRequests.Add(entity);
-            return Save();
+            await _db.LeaveRequests.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveRequest entity)
+        public async Task<bool> Delete(LeaveRequest entity)
         {
             _db.LeaveRequests.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public ICollection<LeaveRequest> FindAll()
+        public async Task<ICollection<LeaveRequest>> FindAll()
         {
-            return _db.LeaveRequests
+            return await _db.LeaveRequests
                 .Include(q => q.LeaveType)
                 .Include(q => q.ApprovedBy)
                 .Include(q => q.Employee)
-                .ToList();
+                .ToListAsync();
         }
 
-        public LeaveRequest FindByID(int id)
+        public async Task<LeaveRequest> FindByID(int id)
         {
-            return _db.LeaveRequests
+            return await _db.LeaveRequests
                 .Include(q => q.Employee)
                 .Include(q => q.LeaveType)
                 .Include(q => q.ApprovedBy)
-                .FirstOrDefault(q => q.Id==id);
+                .FirstOrDefaultAsync(q => q.Id==id);
         }
 
-        public ICollection<LeaveRequest> GetLeaveRequestByEmployee(string id)
+        public async Task<ICollection<LeaveRequest>> GetLeaveRequestByEmployee(string id)
         {
             //var period = DateTime.Now.Year;
-            return FindAll()
-                .Where(q => q.RequestingEmployeeId == id)
+            var leaverequests = await FindAll();
+             return leaverequests.Where(q => q.RequestingEmployeeId == id)
                 .ToList();
         }
 
-        public bool isExists(int id)
+        public async Task<bool> isExists(int id)
         {
             //cool way to check if a table is empty
             //var exists = _db.LeaveRequests.Any();
             //returns true if table has value
 
-            var exists = _db.LeaveRequests.Any(q => q.Id == id);
+            var exists = await _db.LeaveRequests.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var changes = _db.SaveChanges();
+            var changes = await _db.SaveChangesAsync();
             return changes > 0;
         }
 
-        public bool Update(LeaveRequest entity)
+        public async Task<bool> Update(LeaveRequest entity)
         {
-            _db.LeaveRequests.Update(entity);
-            return Save();
+             _db.LeaveRequests.Update(entity);
+            return await Save();
         }
     }
 }

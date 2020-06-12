@@ -37,9 +37,9 @@ namespace PMS.Contracts
         }
         [Authorize(Roles ="Administrator")]
         // GET: LeaveRequestController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var leaverequest = _leaverequestrepo.FindAll();
+            var leaverequest = await _leaverequestrepo.FindAll();
             var leaveRequestModel = _mapper.Map<List<LeaveRequestViewModel>>(leaverequest);
             var model = new AdminLeaveRequestViewModel
             {
@@ -53,12 +53,12 @@ namespace PMS.Contracts
             return View(model);
         }
 
-        public ActionResult MyLeave()
+        public async Task<ActionResult> MyLeave()
         {
-            var employee = _userManager.GetUserAsync(User).Result;
+            var employee = await _userManager.GetUserAsync(User);
             var employeeid = employee.Id;
-            var allocation = _leaveallocationrepo.GetLeaveAllocationsByEmployee(employeeid);
-            var employeeRequests = _leaverequestrepo.GetLeaveRequestByEmployee(employeeid);
+            var allocation = await _leaveallocationrepo.GetLeaveAllocationsByEmployee(employeeid);
+            var employeeRequests = await _leaverequestrepo.GetLeaveRequestByEmployee(employeeid);
 
             var allocationModel = _mapper.Map<List<LeaveAllocationViewModel>>(allocation);
             var employeeRequestModel = _mapper.Map<List<LeaveRequestViewModel>>(employeeRequests);
@@ -73,19 +73,19 @@ namespace PMS.Contracts
         }
 
         // GET: LeaveRequestController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var leaverequest = _leaverequestrepo.FindByID(id);
+            var leaverequest = await _leaverequestrepo.FindByID(id);
             var model = _mapper.Map<LeaveRequestViewModel>(leaverequest);
             return View(model);
         }
 
-        public ActionResult ApproveRequest(int id)
+        public async Task<ActionResult> ApproveRequest(int id)
         {
             try
             {
-                var userLoggedIn = _userManager.GetUserAsync(User).Result;
-                var leaverequest = _leaverequestrepo.FindByID(id);
+                var userLoggedIn = await _userManager.GetUserAsync(User);
+                var leaverequest = await _leaverequestrepo.FindByID(id);
                 leaverequest.Approved = true;
                 leaverequest.ApprovedById = userLoggedIn.Id;
                 leaverequest.DateActioned = DateTime.Now;
@@ -93,12 +93,12 @@ namespace PMS.Contracts
 
                 var employeeid = leaverequest.RequestingEmployeeId;
                 var leavetypeid = leaverequest.LeaveTypeId;
-                var allocation = _leaveallocationrepo.GetLeaveAllocationsByEmployeeAndType(employeeid, leavetypeid);
+                var allocation = await _leaveallocationrepo.GetLeaveAllocationsByEmployeeAndType(employeeid, leavetypeid);
                 allocation.NumberOfDays = allocation.NumberOfDays - DaysRequested;
 
 
-                _leaverequestrepo.Update(leaverequest);
-                _leaveallocationrepo.Update(allocation);
+                await _leaverequestrepo.Update(leaverequest);
+                await _leaveallocationrepo.Update(allocation);
 
                     return RedirectToAction(nameof(Index));
                
@@ -111,18 +111,18 @@ namespace PMS.Contracts
         }
 
 
-        public ActionResult RejectRequest(int id)
+        public async Task<ActionResult> RejectRequest(int id)
         {
 
             try
             {
-                var userLoggedIn = _userManager.GetUserAsync(User).Result;
-                var leaverequest = _leaverequestrepo.FindByID(id);
+                var userLoggedIn = await _userManager.GetUserAsync(User);
+                var leaverequest = await _leaverequestrepo.FindByID(id);
                 leaverequest.Approved = false;
                 leaverequest.ApprovedById = userLoggedIn.Id;
                 leaverequest.DateActioned = DateTime.Now;
 
-                _leaverequestrepo.Update(leaverequest);
+                await _leaverequestrepo.Update(leaverequest);
               
                 return RedirectToAction(nameof(Index));
                
@@ -135,9 +135,9 @@ namespace PMS.Contracts
         }
 
         // GET: LeaveRequestController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            var leavetypes = _leaverepo.FindAll();
+            var leavetypes = await _leaverepo.FindAll();
             var LeaveTypeItems = leavetypes.Select(q => new SelectListItem
             {
                 Text=q.Name,
@@ -154,7 +154,7 @@ namespace PMS.Contracts
         // POST: LeaveRequestController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateLeaveRequestViewModel model)
+        public async Task<ActionResult> Create(CreateLeaveRequestViewModel model)
         {
             
             try
@@ -163,7 +163,7 @@ namespace PMS.Contracts
                 var endDate = Convert.ToDateTime(model.EndDate);
 
                 //load dropdown 
-                var leavetypes = _leaverepo.FindAll();
+                var leavetypes = await _leaverepo.FindAll();
                 var LeaveTypeItems = leavetypes.Select(q => new SelectListItem
                 {
                     Text = q.Name,
@@ -184,8 +184,8 @@ namespace PMS.Contracts
                 }
 
                 //current user
-                var employee = _userManager.GetUserAsync(User).Result;
-                var allocation = _leaveallocationrepo.GetLeaveAllocationsByEmployeeAndType(employee.Id, model.LeaveTypeId);
+                var employee = await _userManager.GetUserAsync(User);
+                var allocation = await _leaveallocationrepo.GetLeaveAllocationsByEmployeeAndType(employee.Id, model.LeaveTypeId);
 
                 int DaysRequested = (int)(endDate - startDate).TotalDays;
                 if (DaysRequested> allocation.NumberOfDays)
@@ -206,7 +206,7 @@ namespace PMS.Contracts
                     RequestComment=model.RequestComment
                 };
                 var leaverequest = _mapper.Map<LeaveRequest>(leaverequestmodel);
-                var isSuccess = _leaverequestrepo.Create(leaverequest);
+                var isSuccess = await _leaverequestrepo.Create(leaverequest);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Something went wrong");

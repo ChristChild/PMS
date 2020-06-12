@@ -25,23 +25,28 @@ namespace PMS.Controllers
         }
 
         // GET: LeaveTypes
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var leavetypes = _repo.FindAll().ToList();
-            var model = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leavetypes);
-            return View(model);
-            
+            var leavetypes = await _repo.FindAll();
+            var model = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leavetypes.ToList());
+            return View(model);           
+
+            //var leavetypes = _repo.FindAll().ToList();
+            //var model = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leavetypes);
+            //return View(model);
+
         }
 
         // GET: LeaveTypes/Details/5
-        public ActionResult Details(int id)
-        {    
-            if(!_repo.isExists(id))
+        public async Task<ActionResult> Details(int id)
+        {
+            var isExists = await _repo.isExists(id);
+            if(isExists)
             {
                 return NotFound();
             }
 
-            var leavetype = _repo.FindByID(id);
+            var leavetype = await _repo.FindByID(id);
             var model = _mapper.Map<LeaveTypeViewModel>(leavetype);
 
             return View(model);
@@ -56,7 +61,7 @@ namespace PMS.Controllers
         // POST: LeaveTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(LeaveTypeViewModel model)
+        public async Task<ActionResult> Create(LeaveTypeViewModel model)
         {
             try
             {
@@ -69,7 +74,7 @@ namespace PMS.Controllers
                 var leaveType = _mapper.Map<LeaveType>(model);
                 leaveType.DateCreated = DateTime.Now;
 
-                var isSuccess = _repo.Create(leaveType);
+                var isSuccess =await _repo.Create(leaveType);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Something went wrong...");
@@ -85,14 +90,15 @@ namespace PMS.Controllers
         }
 
         // GET: LeaveTypes/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (!_repo.isExists(id))
+            var isExist = await _repo.isExists(id);
+            if (isExist)
             {
                 return NotFound();
             }
 
-            var leaveType = _repo.FindByID(id);
+            var leaveType = await _repo.FindByID(id);
             var model = _mapper.Map<LeaveTypeViewModel>(leaveType);
             return View(model);
 
@@ -101,7 +107,7 @@ namespace PMS.Controllers
         // POST: LeaveTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(LeaveTypeViewModel model)
+        public async Task<ActionResult> Edit(LeaveTypeViewModel model)
         {
             try
             {
@@ -112,7 +118,7 @@ namespace PMS.Controllers
                 }
                 var leaveType = _mapper.Map<LeaveType>(model);
 
-                var isSuccess = _repo.Update(leaveType);
+                var isSuccess = await _repo.Update(leaveType);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Something went wrong...");
@@ -129,7 +135,7 @@ namespace PMS.Controllers
         }
 
         // GET: LeaveTypes/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             //if (!_repo.isExists(id))
             //{
@@ -142,12 +148,12 @@ namespace PMS.Controllers
 
            
                 // TODO: Add delete logic here
-                var leavetype = _repo.FindByID(id);
+                var leavetype = await _repo.FindByID(id);
                 if (leavetype == null)
                 {
                     return NotFound();
                 }
-                var isSuccess = _repo.Delete(leavetype);
+                var isSuccess = await _repo.Delete(leavetype);
 
                 if (!isSuccess)
                 {
@@ -164,17 +170,17 @@ namespace PMS.Controllers
         // POST: LeaveTypes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, LeaveTypeViewModel model)
+        public async Task<ActionResult> Delete(int id, LeaveTypeViewModel model)
         {
             try
             {
                 // TODO: Add delete logic here
-                var leavetype = _repo.FindByID(id);
+                var leavetype = await _repo.FindByID(id);
                 if (leavetype==null)
                 {
                     return NotFound();
                 }
-                var isSuccess = _repo.Delete(leavetype);
+                var isSuccess = await _repo.Delete(leavetype);
 
                 if (!isSuccess)
                 {
