@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PMS.Data
 {
-    public class LeaveHistory
+    public class LeaveRequest
     {
         [Key]
         public int Id { get; set; }
@@ -30,6 +30,7 @@ namespace PMS.Data
         [ForeignKey("ApprovedById")]
         public Employee ApprovedBy { get; set; }
         public string ApprovedById { get; set; }
+        public string RequestComment { get; set; }
 
 
 

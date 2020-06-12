@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace PMS.Contracts
 {
-    public interface ILeaveHistoryRepository: IRepositoryBase<LeaveHistory>
+    public interface ILeaveRequestRepository: IRepositoryBase<LeaveRequest>
     {
+        ICollection<LeaveRequest> GetLeaveRequestByEmployee(string id);
+
     }
 }

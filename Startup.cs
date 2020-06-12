@@ -38,7 +38,7 @@ namespace PMS
             //Add Refernces for Repository and Contracts to startup file
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
-            services.AddScoped<ILeaveHistoryRepository, LeaveHistoryRepository>();
+            services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 
             services.AddAutoMapper(typeof(AutomapperMaps));
                      // -- need to confirm email address in order to login --

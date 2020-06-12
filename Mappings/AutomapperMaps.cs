@@ -15,7 +15,7 @@ namespace PMS.Mappings
             CreateMap<LeaveType, LeaveTypeViewModel>().ReverseMap();            
             CreateMap<LeaveAllocation, LeaveAllocationViewModel>().ReverseMap();
             CreateMap<LeaveAllocation, EditLeaveAllocationViewModel>().ReverseMap();
-            CreateMap<LeaveHistory, LeaveHistoryViewModel>().ReverseMap();
+            CreateMap<LeaveRequest, LeaveRequestViewModel>().ReverseMap();
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
 
         }
