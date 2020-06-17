@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PMS.Data;
+using PMS.Services;
 
 namespace PMS.Areas.Identity.Pages.Account
 {
@@ -24,17 +25,21 @@ namespace PMS.Areas.Identity.Pages.Account
         private readonly UserManager<Employee> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMailService mailService;
 
         public RegisterModel(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
+            IMailService mailService,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.mailService = mailService;
+
         }
 
         [BindProperty]
@@ -79,6 +84,7 @@ namespace PMS.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+       
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -105,6 +111,24 @@ namespace PMS.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    //try
+                    //{
+                    //    var mailInfo = new MailRequest
+                    //    {
+                    //        ToEmail = Input.Email,
+                    //        Subject = "Confirm your email",
+                    //        Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    //};
+                    //    await mailService.SendEmailAsync(mailInfo);
+
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //    throw;
+                    //}
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

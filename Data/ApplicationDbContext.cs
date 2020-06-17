@@ -18,6 +18,7 @@ namespace PMS.Data
         public DbSet <LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<FileModel> FileModels { get; set; }
         public DbSet<PMS.Models.LeaveTypeViewModel> DetailsLeaveTypeViewModel { get; set; }
 
 

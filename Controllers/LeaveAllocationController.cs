@@ -47,6 +47,7 @@ namespace PMS.Controllers
 
         }
 
+       
         public async Task<ActionResult> SetLeave(int id)
         {
             var leavetype = await _leaverepo.FindByID(id);

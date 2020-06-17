@@ -75,4 +75,10 @@ namespace PMS.Models
         public List<LeaveRequestViewModel> LeaveRequests { get; set; }
     }
 
+    public class DownloadEmployeeLeaveRequestViewModel
+    {
+        public List<LeaveAllocationViewModel> LeaveAllocations { get; set; }
+        public List<LeaveRequestViewModel> LeaveRequests { get; set; }
+    }
+
 }

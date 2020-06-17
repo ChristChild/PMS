@@ -16,6 +16,8 @@ using PMS.Contracts;
 using PMS.Repository;
 using AutoMapper;
 using PMS.Mappings;
+using PMS.Settings;
+using PMS.Services;
 
 namespace PMS
 {
@@ -35,13 +37,24 @@ namespace PMS
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+           
             //Add Refernces for Repository and Contracts to startup file
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
+            services.AddScoped<IFileModelRepository, FileModelRepository>();
 
             services.AddAutoMapper(typeof(AutomapperMaps));
-                     // -- need to confirm email address in order to login --
+
+            //Get data from json development file, so we can we tranfer these data to an instance of MailSettings at runtime
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+
+            //mail services
+            services.AddTransient<IMailService, Services.MailServiceRepo>();
+
+
+
+            // -- need to confirm email address in order to login --
             services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
            // services.AddDefaultIdentity<Employee>()
                 .AddRoles<IdentityRole>()

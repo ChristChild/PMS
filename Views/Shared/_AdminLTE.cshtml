@@ -22,7 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="~/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    @*<link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />*@
+    <link rel="stylesheet" href="~/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
@@ -186,7 +187,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>*@
 
                     <partial name="_LoginPartial" />              
-
+                <hr />
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -202,13 +203,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a asp-area="" asp-controller="LeaveRequest" asp-action="Create" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>
                                     Apply for leave
                                 </p>
                             </a>
                         </li>
+
 
 
                         @if (SignInManager.IsSignedIn(User))
@@ -225,7 +227,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a asp-controller="LeaveTypes" asp-action="Index" class="nav-link active">
+                                            <a asp-controller="LeaveTypes" asp-action="Index" class="nav-link">
                                                 <i class="fas fa-circle nav-icon"></i>
                                                 <p>Leave Types</p>
                                             </a>
@@ -237,7 +239,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a asp-controller="LeaveRequest" asp-action="Index" class="nav-link">
                                                 <i class="fas fa-circle nav-icon"></i>
                                                 <p>Leave Request</p>
                                             </a>
@@ -273,7 +275,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            @RenderBody()
+            <div class="content-header">
+                <div class="container-fluid">
+
+                </div>
+
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+
         </div>
         <!-- /.content-wrapper -->
         <!-- Control Sidebar -->
@@ -305,7 +318,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="~/js/adminlte.min.js"></script>
 
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://code.jquery.com.ui/1.12.1/jquery-ui.js"></script>
+    @*<script src="https://code.jquery.com.ui/1.12.1/jquery-ui.js"></script>*@
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

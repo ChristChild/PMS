@@ -18,6 +18,17 @@ namespace PMS.Mappings
             CreateMap<LeaveRequest, LeaveRequestViewModel>().ReverseMap();
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
 
+
+            CreateMap<LeaveAllocation, EmployeeLeaveRequestViewModel>().ReverseMap();
+            CreateMap<LeaveType, EmployeeLeaveRequestViewModel>().ReverseMap();
+
+            CreateMap<LeaveType, DownloadEmployeeLeaveRequestViewModel>().ReverseMap();
+            CreateMap<LeaveType, DownloadEmployeeLeaveRequestViewModel>().ReverseMap();
+
+            CreateMap<FileModel, FileModelViewModel>().ReverseMap();
+            CreateMap<FileModel, FileUploadViewModel>().ReverseMap();
+            CreateMap<LeaveType, FileUploadViewModel>().ReverseMap();
+
         }
     }
 }

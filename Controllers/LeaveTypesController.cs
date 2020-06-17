@@ -41,7 +41,7 @@ namespace PMS.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var isExists = await _repo.isExists(id);
-            if(isExists)
+            if(!isExists)
             {
                 return NotFound();
             }
@@ -80,6 +80,7 @@ namespace PMS.Controllers
                     ModelState.AddModelError("", "Something went wrong...");
                     return View(model);
                 }
+                var id = leaveType.Id;
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -93,7 +94,7 @@ namespace PMS.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var isExist = await _repo.isExists(id);
-            if (isExist)
+            if (!isExist)
             {
                 return NotFound();
             }

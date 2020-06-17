@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -47,6 +47,55 @@
 </div>
 <br />
 <br />
+<div class="row">
+    <div class="col-md-3">
+        <div class="info-box">
+            <Span class="info-box bg-info"> <i class="fa fa-envelope"></i>  </Span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.TotalRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.TotalRequest)</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box bg-success"> <i class="fa fa-check-circle"></i>       </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.ApprovedRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.ApprovedRequest)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box bg-warning"> <i class="fa fa-exclamation"></i>       </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.PendingRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.PendingRequest)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box bg-danger">  <i class="fa fa-envelope"></i>      </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.RejectedRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.RejectedRequest)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<br />
+<br />
 <table id="tblData" class="table">
     <thead>
         <tr>
@@ -70,7 +119,7 @@
             <th>
                 Approval Status
             </th>
-           
+
 
             <th></th>
         </tr>
@@ -96,7 +145,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DateRequested)
                 </td>
-               
+
                 <td>
                     @if (item.Approved == true)
                     {
@@ -115,18 +164,21 @@
                     @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
                     <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
                         <i class="fa fa-file"></i> Review
-                        </a>
+                    </a>
                     @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<br />
+
+
 @section Scripts{
     <script>
-    $(document).ready(function () {
-        $('#tblData').DataTable();
-    });
+        $(document).ready(function () {
+            $('#tblData').DataTable();
+        });
 
     </script>
 }

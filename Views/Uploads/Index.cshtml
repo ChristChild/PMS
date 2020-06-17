@@ -1,0 +1,314 @@
+﻿@model FileUploadViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<h4>FileUploadViewModel</h4>
+<hr />
+@*<div class="row">
+        <div class="col-md-4">
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>*@
+
+
+<h4>Start Uploading Files Here</h4>
+<hr />
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="files" multiple required />
+
+    <div class="form-group row">
+
+        <div class="col-sm-2 col-form-label">
+            Description
+        </div>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" autocomplete="off" placeholder="Enter File Description" name="description" required />
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        @*<label asp-for="LeaveTypeId" class="col-sm-2 col-form-label"></label>*@
+        @*@Html.DisplayNameFor(model => model.FilesOnFileSystem)*@
+        <div class="col-sm-2 col-form-label">
+            Leave Type
+        </div>
+        <div class="col-sm-10">
+            @Html.DropDownListFor(q => q.LeaveTypeId, new SelectList(Model.LeaveTypes, "Value", "Text"), "Select Leave Type", new { @class = "form-control" })
+        </div>
+        <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" asp-controller="Uploads" asp-action="UploadToFileSystem">Upload to File System</button>
+    <button class="btn btn-success" type="submit" asp-controller="Uploads" asp-action="UploadToDatabase">Upload to Database</button>
+</form>
+<hr />
+
+
+<div class="card">
+    <div class="row no-gutters">
+        <div class="col-auto">
+            <img src="//placehold.it/200" class="img-fluid" alt="">
+        </div>
+        <div class="col">
+            <div class="card-block px-2">
+
+               @* <h4 class="card-title font-weight-bold float-right">Room 23</h4>*@
+                @*<br />*@
+                <div class="card-text">
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                    This is th issue for the task
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Assigned to:</div>
+                            <div class="col-md-8">Tweecie</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4  font-weight-bold">Deadline:</div>
+                            <div class="col-md-8">December 25, 2020</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Priority:</div>
+                            <div class="col-md-8">High</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Staus:</div>
+                            <div class="col-md-8">Open</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">% Complete:</div>
+                            <div class="col-md-8">20%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Comment:</div>
+                            <div class="col-md-8">View</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <a href="#" class="card-link float-right">More>> </a>
+
+    </div>
+</div>
+
+
+
+
+<br />
+<hr />
+<h4>Files on File System</h4>
+@if (Model.FilesOnFileSystem.Count == 0)
+{
+    <caption>No Records Found</caption>
+}
+else
+{
+    <caption>List of Files on File System</caption>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>File Type</th>
+                <th>Created On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model.FilesOnFileSystem)
+            {
+                <tr>
+                    <th>@file.Id</th>
+                    <td>@file.Name</td>
+                    <td>@file.Description</td>
+                    <td>@file.FileType</td>
+                    <td>@file.CreatedOn</td>
+                    <td>
+                        <a type="button" class="btn btn-primary" asp-controller="File" asp-action="DownloadFileFromFileSystem" asp-route-id="@file.Id">Download</a>
+                        <a type="button" class="btn btn-danger" asp-controller="File" asp-action="DeleteFileFromFileSystem" asp-route-id="@file.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<br />
+
+
+@foreach (var file in Model.FilesOnFileSystem)
+{
+    var dateNow = DateTime.Now;
+    var dateDue = @file.CreatedOn;
+    TimeSpan datedifference = (dateDue - dateNow) ?? TimeSpan.Zero; ;
+    int days = datedifference.Days;
+
+
+<div class="card">
+    @*@{
+        var dateNow = DateTime.Now;
+        var dateDue = @file.CreatedOn;
+        TimeSpan datedifference = (dateDue - dateNow) ?? TimeSpan.Zero; ;
+        int days = datedifference.Days;
+        //int d3 = (int)(dateDue - dateDue).TotalDays;
+    }*@
+
+    <div class="row no-gutters">
+        <div class="col-auto">
+            <img src="//placehold.it/180" class="img-fluid" alt="">
+        </div>
+        <div class="col">
+            <div class="card-block px-2">
+
+                @*<h6 class="card-title font-weight-bold">Task Details</h6>*@
+
+                <div class="card-text">
+                    <h5>Issue:</h5>
+                    <h6 class="font-italic">@file.Description</h6>
+                </div>
+                <br />
+                <hr style="padding:2px; margin:0px;" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Assigned to:</div>
+                            <div class="col-md-8">@file.UploadedBy</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4  font-weight-bold">Deadline:</div>
+                            <div class="col-md-8">@file.CreatedOn</div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="padding:2px; margin:0px;" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Priority:</div>
+                            <div class="col-md-8">@file.Extension</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Staus:</div>
+                            <div class="col-md-8">@file.LeaveType.Name</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="padding:2px; margin:0px;" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">% Complete:</div>
+                            <div class="col-md-8">@file.Name</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-4 font-weight-bold">Comment:</div>
+                            <div class="col-md-8">
+                                <a href="#">View </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    @*@((line.Quantity * line.Product.Price).ToString("c"))*@
+
+
+    @if (days >= 6)
+    {
+        <div class="card-footer text-muted bg-info">
+            <a href="#" class="card-link float-right">More>> </a>
+        </div>
+    }
+    // else if (days<=5)
+    else if (days >= 2 && days < 6)
+    {
+        <div class="card-footer text-muted bg-warning">
+            <a href="#" class="card-link float-right">More>> </a>
+
+        </div>
+    }
+    else if (days <= 1)
+    {
+        <div class="card-footer text-muted bg-danger">
+            <a href="#" class="card-link float-right">More>> </a>
+
+        </div>
+    }
+
+    else
+    {
+        <div class="card-footer text-muted bg-primary">
+            <a href="#" class="card-link float-right">More>> </a>
+
+        </div>
+    }
+
+
+</div>
+    <br />
+}
